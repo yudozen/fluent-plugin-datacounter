@@ -3,6 +3,7 @@ class Fluent::DataCounterOutput < Fluent::BufferedOutput
 
 	def initialize
 		super
+		require 'net/http'
 	end
 
 	def configure(conf)
@@ -17,14 +18,27 @@ class Fluent::DataCounterOutput < Fluent::BufferedOutput
 		super
 	end
 
-	def format(tag, time, record)
-		[tag, time, record].to_msgpack
+	def emit(tag, es, chain)
+		chain.next
+		es.each {|time, record|
+			res = post(tag, time, record)
+			$log.warn "time=#{time} record=#{record} body=#{res.body}"
+		}
 	end
 
-	def write(chunk)
-		records = []
-		chunk.msgpack_each { |record|
-
+	def post(tag, time, record)
+		url = URI.parse("http://douzen.net")
+		params = {
+			"message" => record
 		}
+		begin
+			#res = Net::HTTP.get(url, params)
+			res = Net::HTTP.start(url.host, url.port) { |http|
+				http.get('/')
+			}
+		rescue
+
+		end
+		return res
 	end
 end

@@ -7,8 +7,8 @@ Gem::Specification.new do |gem|
   gem.version       = "0.0.1"
   gem.authors       = ["Dozen Yutaro"]
   gem.email         = ["yudozen@gmail.com"]
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
+  gem.description   = %q{fluentd plugin}
+  gem.summary       = %q{fluentd plugin}
   gem.homepage      = "http://douzen.net"
 
   gem.files         = `git ls-files`.split($/)
